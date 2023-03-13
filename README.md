@@ -1,7 +1,8 @@
 # prazzapis
 
-## Free Open Source APis
+## Free Open Source APIs
+## prazzapis.cyclic.app
 ### List API
-- Merdeka News Trending
-- Top Anime on Batckun.com
-- Tebak Gambar
+- Merdeka News Trending [GET: <b>/merdeka-trending</b>]
+- Top Anime on Batckun.com [GET: <b>/bk-top-anime</b>]
+- Tebak Gambar [GET: <b>/tebak-gambar</b>]
