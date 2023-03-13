@@ -12,7 +12,7 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use('/api/v1', routes)
+app.use('/', routes)
 
 app.listen(port, () => {
     console.log('Server running on port', port)
