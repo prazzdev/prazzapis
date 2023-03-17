@@ -5,10 +5,7 @@ controller = {}
 // merdekaTrending, antaraNewsTrending, bkTopAnime, tebakGambar, animeBatch
 
 controller.home = async (req, res) => {
-    res.render('home', {
-        title: 'PRAZZAPIS | Free Open Source APIs',
-        layout: 'main'
-    })
+    res.redirect('https://prazzdev.github.io/prazzapis')
 }
 
 controller.merdekaTrending = async (req, res) => {
