@@ -2,6 +2,15 @@ const axios = require('axios')
 const cheerio = require('cheerio')
 controller = {}
 
+// merdekaTrending, antaraNewsTrending, bkTopAnime, tebakGambar, animeBatch
+
+controller.home = async (req, res) => {
+    res.render('home', {
+        title: 'PRAZZAPIS | Free Open Source APIs',
+        layout: 'main'
+    })
+}
+
 controller.merdekaTrending = async (req, res) => {
     axios.get('https://www.merdeka.com/trending')
     .then(function(response) {
@@ -29,6 +38,29 @@ controller.merdekaTrending = async (req, res) => {
         }
     }), 
     (error) => console.log(err)
+}
+
+controller.antaraNewsTrending = async (req, res) => {
+    axios.get('https://www.antaranews.com/indeks')
+    .then(function(response) {
+        if(response.status == 200){
+            const html = response.data
+            const $ = cheerio.load(html)
+
+            let detikList = []
+            $('.simple-post').each(function(i, elem) {
+                detikList[i] = {
+                    // no: $(this).find('a').text().trim(),,
+                    thumb: $(this).find('.simple-thumb a img').attr('data-src'),
+                    title: $(this).find('header h3 a').text().trim(),
+                    url: $(this).find('header h3 a').attr('href'),
+                    date: $(this).find('.simple-share span').text().trim(),
+                }
+            })
+            const detikListTrim = detikList.filter(n => n != undefined)
+            console.log(detikListTrim)
+        }
+    }), (error) => console.log(err)
 }
 
 controller.bkTopAnime = async (req, res) => {
@@ -81,10 +113,44 @@ controller.tebakGambar = async (req, res) => {
         (error) => console.log(err)
 }
 
+controller.animeBatch = async (req, res) => {
+    const page1 = "https://www.animebatch.id/movies/"
+    const page2 = "https://www.animebatch.id/movies/page/2/"
+    const page3 = "https://www.animebatch.id/movies/page/3/"
+    const page4 = "https://www.animebatch.id/movies/page/4/"
+    const page5 = "https://www.animebatch.id/movies/page/5/"
 
+    axios.get(page2)
+        .then(function(response) {
+            if(response.status == 200){
+                const html = response.data
+                const $ = cheerio.load(html)
 
+                let data = []
+                $('.box-blog').each(function(i, elem) {
+                    data[i] = {
+                        // no: $(this).find('a').text().trim(),,
+                        thumb: $(this).find('.img a img').attr('src'),
+                        title: $(this).find('.data h2 a').text().trim(),
+                        desc: $(this).find('.data .exp p').text().trim(),
+                        date: $(this).find('.data .auth i').text().trim(),
+                        url: $(this).find('.box-blog img a').attr('href'),
+                    }
+                })
+                const dataTrim = data.filter(n => n != undefined)
+                res.status(200).json({
+                    data: dataTrim
+                })
+            }
+        }), (error) => console.log(err)
+}
 
-
+controller.lirikSholawat = async (req, res) => {
+    axios.get(`https://www.dutaislam.com/search?q=lirik`)
+        .then(function(response) {
+            console.log(response)
+        })
+}
 
 
 module.exports = controller
