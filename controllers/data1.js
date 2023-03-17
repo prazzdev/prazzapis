@@ -142,12 +142,12 @@ controller.animeBatch = async (req, res) => {
         }), (error) => console.log(err)
 }
 
-controller.lirikSholawat = async (req, res) => {
-    axios.get(`https://www.dutaislam.com/search?q=lirik`)
-        .then(function(response) {
-            console.log(response)
-        })
-}
+// controller.lirikSholawat = async (req, res) => {
+//     axios.get(`https://www.dutaislam.com/search?q=lirik`)
+//         .then(function(response) {
+//             console.log(response)
+//         })
+// }
 
 
 module.exports = controller
