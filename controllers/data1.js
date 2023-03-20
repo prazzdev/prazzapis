@@ -3,6 +3,7 @@ const cheerio = require('cheerio')
 controller = {}
 
 // merdekaTrending, antaraNewsTrending, bkTopAnime, tebakGambar, animeBatch
+// tenorGif, 
 
 controller.home = async (req, res) => {
     res.redirect('https://prazzdev.github.io/prazzapis')
@@ -141,6 +142,60 @@ controller.animeBatch = async (req, res) => {
             }
         }), (error) => console.log(err)
 }
+
+controller.tenorGif = async (req, res) => {
+    const tenor = "https://tenor.com/search/meme-gifs"
+    axios.get(tenor)
+        .then(function(response) {
+            if(response.status == 200){
+                const html = response.data
+                const $ = cheerio.load(html)
+
+                let data = []
+                $('.GifListItem').each(function(i, elem) {
+                    data[i] = {
+                        image: $(this).find('a .Gif img').attr('src'),
+                        // answer: $(this).find('li a span').text().trim(),
+                    }
+                })
+                const tenorTrim = data.filter(n => n.image != undefined)
+                res.status(200).json({
+                    data: tenorTrim
+                })
+            }
+        }), (error) => console.log(err)
+    }
+
+controller.lirikLagu = async (req, res) => {
+    const judul = req.params.judul
+    console.log(`[INFO] Mencari lirik lagu "${judul.toUpperCase()}"`)
+    
+    return new Promise(async(resolve, reject) => {
+            axios.get('https://www.musixmatch.com/search/' + judul)
+            .then(async({ data }) => {
+            const $ = cheerio.load(data)
+            const hasil = {};
+            let limk = 'https://www.musixmatch.com'
+            const link = limk + $('div.media-card-body > div > h2').find('a').attr('href')
+                await axios.get(link)
+                .then(({ data }) => {
+                    const $$ = cheerio.load(data)
+                    hasil.thumb = 'https:' + $$('div.col-sm-1.col-md-2.col-ml-3.col-lg-3.static-position > div > div > div').find('img').attr('src')
+                    $$('div.col-sm-10.col-md-8.col-ml-6.col-lg-6 > div.mxm-lyrics').each(function(a,b) {
+            hasil.lirik = $$(b).find('span > p > span').text() +'\n' + $$(b).find('span > div > p > span').text()
+            })
+        })
+        resolve(hasil)
+        res.status(200).json({
+            data: hasil
+        })
+    })
+    .catch(err => {
+        console.log(err)
+    })
+    })
+}
+
 
 // controller.lirikSholawat = async (req, res) => {
 //     axios.get(`https://www.dutaislam.com/search?q=lirik`)

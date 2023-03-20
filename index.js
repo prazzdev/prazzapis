@@ -1,8 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const axios = require('axios')
-const cheerio = require('cheerio')
 const routes = require('./routers/data')
 
 const app = express()
