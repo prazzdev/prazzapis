@@ -11,5 +11,6 @@ router.get('/anime-batch', controller.data1.animeBatch)
 router.get('/tenor-gif', controller.data1.tenorGif)
 router.get('/lyric', controller.data1.lirikLagu)
 router.get('/isgd', controller.data1.isgd)
+router.get('/wallpaperflare', controller.data1.wallpaperFlare)
 
 module.exports = router

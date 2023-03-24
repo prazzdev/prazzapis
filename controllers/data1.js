@@ -227,4 +227,28 @@ controller.isgd = async (req, res) => {
     }
 }
 
+controller.wallpaperFlare = async (req, res) => {
+    const query = req.query.search
+    axios.get(`https://www.wallpaperflare.com/search?wallpaper=${query}`)
+        .then(function (response) {
+            if (response.status == 200) {
+                const html = response.data
+                const $ = cheerio.load(html)
+                let data = []
+                $('ul.gallery > li').each(function (i, elem) {
+                    data[i] = {
+                        thumb:$(this).find('figure > a > img').attr('data-src'),
+                        link: $(this).find('figure > a').attr('href')
+                    }
+                })
+                const result = data.filter(n => n.thumb != undefined)
+                res.status(200).json({
+                    message: "Success",
+                    data: result
+                })
+                console.log(`[NOTICE] Success to get data from wallpaperflare with query: ${query} (${result.length})`)
+            }
+        })
+}
+
 module.exports = controller
