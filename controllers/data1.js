@@ -167,10 +167,14 @@ controller.tenorGif = async (req, res) => {
     }
 
 controller.lirikLagu = async (req, res) => {
-    const judul = req.params.judul
-    console.log(`[INFO] Mencari lirik lagu "${judul.toUpperCase()}"`)
-    
-    return new Promise(async(resolve, reject) => {
+    const judul = req.query.title    
+    if(judul == undefined){
+        res.status(400).json({
+            message: "Judul tidak boleh kosong!"
+        })
+    } else {
+        console.log(`[INFO] Mencari lirik lagu "${judul.toUpperCase()}"`)
+        return new Promise(async(resolve, reject) => {
             axios.get('https://www.musixmatch.com/search/' + judul)
             .then(async({ data }) => {
             const $ = cheerio.load(data)
@@ -185,24 +189,42 @@ controller.lirikLagu = async (req, res) => {
             hasil.lirik = $$(b).find('span > p > span').text() +'\n' + $$(b).find('span > div > p > span').text()
             })
         })
-        resolve(hasil)
-        res.status(200).json({
-            data: hasil
+            resolve(hasil)
+            res.status(200).json({
+                data: hasil
+            })
         })
-    })
-    .catch(err => {
-        console.log(err)
-    })
-    })
+        .catch(err => {
+            console.log(err)
+        })
+        })
+    }
 }
 
-
-// controller.lirikSholawat = async (req, res) => {
-//     axios.get(`https://www.dutaislam.com/search?q=lirik`)
-//         .then(function(response) {
-//             console.log(response)
-//         })
-// }
-
+// URL Shortener
+controller.isgd = async (req, res) => {
+    const url = req.query.url
+    const options = {
+        method: "GET",
+        url: `https://api.akuari.my.id/short/isgd?link=${url}`
+    }
+    if(url == undefined){
+        res.status(400).json({
+            message: "URL tidak boleh kosong"
+        })
+    } else {
+        axios.request(options).then( async (response) => {
+            const oriUrl = response.data.url_asli
+            const shortUrl = response.data.hasil.shorturl
+            res.status(200).json({
+                message: "URL Shortener",
+                data: {
+                    oriUrl: oriUrl,
+                    shortUrl: shortUrl
+                }
+            })
+        })
+    }
+}
 
 module.exports = controller
