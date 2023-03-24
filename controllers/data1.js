@@ -9,58 +9,6 @@ controller.home = async (req, res) => {
     res.redirect('https://prazzdev.github.io/prazzapis')
 }
 
-controller.merdekaTrending = async (req, res) => {
-    axios.get('https://www.merdeka.com/trending')
-    .then(function(response) {
-        if(response.status == 200){
-            const html = response.data
-            const $ = cheerio.load(html)
-
-            let detikList = []
-            $('.clearfix').each(function(i, elem) {
-                detikList[i] = {
-                    // no: $(this).find('a').text().trim(),
-                    title: $(this).find('.meta-content div h3 a').text().trim(),
-                    url: `https://merdeka.com${$(this).find('.meta-content div h3 a').attr('href')}`,
-                    date: $(this).find('.meta-content div .mdk-body-newsimg-date').text().trim(),
-                }
-            })
-            const detikListTrim = detikList.filter(n => n.title.length > 2 && n.title.length < 200)
-            // fs.writeFile('data/merdeka.json',
-            // JSON.stringify(detikListTrim, null, 4), (err) => {
-            //     console.log('Write scrapping is Success')
-            // })
-            res.status(200).json({
-                data: detikListTrim
-            })
-        }
-    }), 
-    (error) => console.log(err)
-}
-
-controller.antaraNewsTrending = async (req, res) => {
-    axios.get('https://www.antaranews.com/indeks')
-    .then(function(response) {
-        if(response.status == 200){
-            const html = response.data
-            const $ = cheerio.load(html)
-
-            let detikList = []
-            $('.simple-post').each(function(i, elem) {
-                detikList[i] = {
-                    // no: $(this).find('a').text().trim(),,
-                    thumb: $(this).find('.simple-thumb a img').attr('data-src'),
-                    title: $(this).find('header h3 a').text().trim(),
-                    url: $(this).find('header h3 a').attr('href'),
-                    date: $(this).find('.simple-share span').text().trim(),
-                }
-            })
-            const detikListTrim = detikList.filter(n => n != undefined)
-            console.log(detikListTrim)
-        }
-    }), (error) => console.log(err)
-}
-
 controller.bkTopAnime = async (req, res) => {
     const topAnime = "https://batchkun.com/category/top-anime/"
     axios.get(topAnime)
@@ -237,7 +185,7 @@ controller.wallpaperFlare = async (req, res) => {
                 let data = []
                 $('ul.gallery > li').each(function (i, elem) {
                     data[i] = {
-                        thumb:$(this).find('figure > a > img').attr('data-src'),
+                        thumb: $(this).find('figure > a > img').attr('data-src'),
                         link: $(this).find('figure > a').attr('href')
                     }
                 })
@@ -247,6 +195,34 @@ controller.wallpaperFlare = async (req, res) => {
                     data: result
                 })
                 console.log(`[NOTICE] Success to get data from wallpaperflare with query: ${query} (${result.length})`)
+            }
+        })
+}
+
+controller.wallpapersCraft = async (req, res) => {
+    const search = req.query.search
+    const size = req.query.size
+    axios.get(`https://wallpaperscraft.com/search/?query=${search}&size=${size}`)
+        .then(function (response) {
+            if (response.status == 200) {
+                const html = response.data
+                const $ = cheerio.load(html)
+                let data = []
+                $('li.wallpapers__item').each(function (i, elem) {
+                    data[i] = {
+                        thumb: $(this).find('a > span > img').attr('src'),
+                        fullImage: 'https://wallpaperscraft.com' + $(this).find('a').attr('href')
+                    }
+                })
+                const result = data.filter(n => n.thumb != undefined)
+                res.status(200).json({
+                    message: "Success",
+                    data: result,
+                    other: {
+                        category: "All, 3D, Abstract, Animals, Anime, Art, Black, Black and white, Cars, City, Dark, Fantasy, Flowers, Food, Holidays, Love, Macro, Minimalism, Motorcycles, Music, Nature, Other, Space, Sport, Technologies, Textures, Vector, Words",
+                        size: "3840x2400, 3840x2160, 2560x1600, 2560x1440, 2560x1080, 2560x1024, 2048x1152, 1920x1200, 1920x1080, 1680x1050, 1600x900, 1440x900, 1280x800, 1280x720"
+                    }
+                })
             }
         })
 }
