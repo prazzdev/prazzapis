@@ -227,4 +227,158 @@ controller.wallpapersCraft = async (req, res) => {
         })
 }
 
+controller.romsGames = async (req, res) => {
+    let rom = req.query.rom
+    let letter = req.query.letter
+    let page = req.query.page
+    let roms = `Nintendo DS
+    Playstation Portable
+    Gameboy Advance
+    GameCube
+    Nintendo Wii
+    Super Nintendo
+    Playstation 2
+    Nintendo 64
+    Playstation
+    Nintendo
+    SEGA Genesis
+    Gameboy Color
+    Dreamcast
+    Gameboy
+    MAME 037b11
+    Sega Saturn
+    Atari 2600
+    Microsoft Xbox
+    SNK Neo Geo
+    Amiga 500
+    Sega Master System
+    ZX Spectrum
+    Game Gear
+    Commodore 64
+    Amstrad CPC
+    TurboGrafx-16
+    Capcom Play System
+    Atari 800
+    Nokia N Gage
+    Sega 32X
+    ColecoVision
+    Capcom Play System 2
+    MSX Computer
+    WonderSwan
+    Atari 7800 ProSystem
+    Nintendo Pokemon Mini
+    Nintendo Famicom Disk System
+    Neo Geo Pocket Color
+    Atari Lynx
+    Intellivision
+    Atari Jaguar
+    MSX-2
+    Nintendo Virtual Boy
+    Apple II
+    Atari 5200 SuperSystem
+    Atari ST
+    Commodore VIC20
+    Sega Pico
+    Capcom Play System 3
+    BBC Micro
+    Sega SG1000
+    Magnavox Odyssey 2
+    Sharp X68000
+    Acorn Electron
+    GCE Vectrex
+    Acorn 8 bit
+    Apple II GS
+    Acorn Archimedes
+    Nintendo 3DS
+    Tangerine Oric
+    Tiger Game Com
+    VTech V Smile
+    Dragon Data Dragon
+    ColecoVision ADAM
+    Sinclair ZX81
+    Robotron Z1013
+    Neo Geo Pocket
+    Thomson MO5
+    Miles Gordon Sam Coupe
+    Amstrad GX4000
+    Fairchild Channel F
+    Watara Supervision
+    Sega Visual Memory System
+    Tandy Color Computer
+    SuFami Turbo
+    Philips Videopac
+    Z-Machine Infocom
+    Super Grafx
+    Epoch Super Cassette Vision
+    Bally Pro Arcade Astrocade
+    Sharp MZ 700
+    Emerson Arcadia 2001
+    Commodore Plus4 C16
+    VTech CreatiVision
+    GamePark GP32
+    Camputers Lynx
+    Pel Varazdin Orao
+    Memotech MTX512
+    Elektronika BK
+    Commodore Pet
+    Entex Adventure Vision
+    Mattel Aquarius
+    Funtech Super Acan
+    Galaksija
+    Hartung Game Master
+    Casio PV1000
+    Interact Family Computer
+    Casio Loopy
+    Sega Super Control Station
+    Commodore Max Machine
+    Wang VS
+    Luxor ABC 800
+    RCA Studio II
+    Kaypro II`
+    if(rom === undefined){
+        res.status(400).json({
+            message: "rom not found!"
+        })
+    }
+    if(letter === undefined) {
+        letter = "all"
+    }
+    if(page === undefined) {
+        page = 1
+    }
+    axios.get(`https://www.romsgames.net/roms/${rom}/?letter=${letter}&page=${page}&sort=alphabetical`)
+        .then( function (response) {
+            if(response.status == 200) {
+                const html = response.data
+                const $ = cheerio.load(html)
+                let data = []
+                $('ul.rg-gamelist > li').each( function (i, elem) {
+                    let thumb = $(this).find('a > div > img').attr('src')
+                    const title = $(this).find('a > span').text().trim()
+                    const link = $(this).find('a').attr('href')
+                    if(thumb.length < 30){ thumb = "https://www.romsgames.net" + thumb }
+                    data[i] = {
+                        thumb: thumb,
+                        title: title,
+                        link: "https://www.romsgames.net" + link
+                    }
+                })
+                const result = data.filter(n => n.thumb != undefined)
+                res.status(200).json({
+                    message: "Success",
+                    payload: {
+                        total: result.length,
+                        rom: rom,
+                        sort_by: letter,
+                        page: page,
+                        data: result,
+                        other: {
+                            roms: roms
+                        }
+                    }
+                })
+            }
+        })
+}
+
 module.exports = controller

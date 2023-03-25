@@ -13,5 +13,6 @@ router.get('/lyric', controller.data1.lirikLagu)
 router.get('/isgd', controller.data1.isgd)
 router.get('/wpflare', controller.data1.wallpaperFlare)
 router.get('/wpscraft', controller.data1.wallpapersCraft)
+router.get('/romsgames', controller.data1.romsGames)
 
 module.exports = router
