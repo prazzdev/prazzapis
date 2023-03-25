@@ -337,48 +337,62 @@ controller.romsGames = async (req, res) => {
     Kaypro II`
     if(rom === undefined){
         res.status(400).json({
-            message: "rom not found!"
-        })
-    }
-    if(letter === undefined) {
-        letter = "all"
-    }
-    if(page === undefined) {
-        page = 1
-    }
-    axios.get(`https://www.romsgames.net/roms/${rom}/?letter=${letter}&page=${page}&sort=alphabetical`)
-        .then( function (response) {
-            if(response.status == 200) {
-                const html = response.data
-                const $ = cheerio.load(html)
-                let data = []
-                $('ul.rg-gamelist > li').each( function (i, elem) {
-                    let thumb = $(this).find('a > div > img').attr('src')
-                    const title = $(this).find('a > span').text().trim()
-                    const link = $(this).find('a').attr('href')
-                    if(thumb.length < 30){ thumb = "https://www.romsgames.net" + thumb }
-                    data[i] = {
-                        thumb: thumb,
-                        title: title,
-                        link: "https://www.romsgames.net" + link
-                    }
-                })
-                const result = data.filter(n => n.thumb != undefined)
-                res.status(200).json({
-                    message: "Success",
-                    payload: {
-                        total: result.length,
-                        rom: rom,
-                        sort_by: letter,
-                        page: page,
-                        data: result,
-                        other: {
-                            roms: roms
-                        }
-                    }
-                })
+            message: "rom not found!",
+            guide: {
+                method: "GET",
+                endpoint: "/romsgames",
+                params: {
+                    rom: "playstation...others",
+                    letter: "a...z/all",
+                    page: "1..99"
+                },
+                other: {
+                    roms: roms
+                }
             }
         })
+    } else {
+        if(letter === undefined) {
+            letter = "all"
+        }
+        if(page === undefined) {
+            page = 1
+        }
+        axios.get(`https://www.romsgames.net/roms/${rom}/?letter=${letter}&page=${page}&sort=alphabetical`)
+            .then( function (response) {
+                if(response.status == 200) {
+                    const html = response.data
+                    const $ = cheerio.load(html)
+                    let data = []
+                    $('ul.rg-gamelist > li').each( function (i, elem) {
+                        let thumb = $(this).find('a > div > img').attr('src')
+                        const title = $(this).find('a > span').text().trim()
+                        const link = $(this).find('a').attr('href')
+                        if(thumb.length < 30){ thumb = "https://www.romsgames.net" + thumb }
+                        data[i] = {
+                            thumb: thumb,
+                            title: title,
+                            link: "https://www.romsgames.net" + link
+                        }
+                    })
+                    const result = data.filter(n => n.thumb != undefined)
+                    res.status(200).json({
+                        message: "Success",
+                        payload: {
+                            total: result.length,
+                            rom: rom,
+                            sort_by: letter,
+                            page: page,
+                            data: result,
+                            other: {
+                                roms: roms
+                            }
+                        }
+                    })
+                }
+            })
+    }
+    
 }
 
 module.exports = controller
