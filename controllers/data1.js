@@ -395,4 +395,45 @@ controller.romsGames = async (req, res) => {
     
 }
 
+controller.apksfree = async (req, res) => {
+    const query = req.query.search
+    if(query == undefined){
+        res.status(404).json({
+            message: "Search query can't be empty"
+        })
+    } else {
+        axios.get(`https://androidapksfree.com/?s=${query}`)
+            .then(function (response) {
+                if(response.status == 200) {
+                    const html = response.data
+                    const $ = cheerio.load(html)
+                    const link = $('div.devapk-apps-list > section').find('div.content.cursor-pointer.box-shadow').attr('onclick')
+                    let rep1 = link.replace(`location.href=`,``)
+                    let rep2 = rep1.replace(/'/g,``) + "download"
+                    axios.get(rep2)
+                        .then(function(response) {
+                            if(response.status == 200) {
+                                const html = response.data
+                                const $ = cheerio.load(html)
+                                let data = {}
+                                const title = $('div.app-icon-new').find('img').attr('alt')
+                                const icon = $('div.app-icon-new').find('img').attr('src')
+                                const link = $('div.download-button-main.centered-element').find('a').attr('href')
+                                data = {
+                                    icon: icon,
+                                    title: title,
+                                    link: link
+                                }
+
+                                res.status(200).json({
+                                    message: "Success to get apk data",
+                                    data: data
+                                })
+                            }
+                        })
+                }
+            })
+    }
+}
+
 module.exports = controller

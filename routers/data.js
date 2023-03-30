@@ -14,5 +14,6 @@ router.get('/isgd', controller.data1.isgd)
 router.get('/wpflare', controller.data1.wallpaperFlare)
 router.get('/wpscraft', controller.data1.wallpapersCraft)
 router.get('/romsgames', controller.data1.romsGames)
+router.get('/apksfree', controller.data1.apksfree)
 
 module.exports = router
