@@ -427,13 +427,128 @@ controller.apksfree = async (req, res) => {
 
                                 res.status(200).json({
                                     message: "Success to get apk data",
-                                    data: data
+                                    data: data,
+                                    note: "Sorry if data isn't match"
                                 })
                             }
                         })
                 }
             })
     }
+}
+
+// controller.resep = async (req, res) => {
+//     axios.request({
+//         url: "https://cookpad.com/id/cari/sosis?event=search.typed_query",
+//         method: "GET",
+//         headers: {
+//         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+//         "accept-language": "en-US,en;q=0.9,id;q=0.8",
+//         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
+//         // "cookie": "_ga=GA1.2.1240046717.1620835673; PHPSESSID=i14curq5t8omcljj1hlle52762; popCookie=1; _gid=GA1.2.1936694796.1623913934"
+//         }
+//         })
+//         .then(async function(response) {
+//             if(response.status == 200) {
+//                 const html = response.data
+//                 const $ = cheerio.load(html)
+//                 let data = []
+//                 $('div.main_contents > div > div > ul').each(function (elem, i) {
+//                     data[i] = {
+//                         recipe_id: $('li').attr('id')
+//                     }
+//                 })
+//                 console.log(data)
+//             }
+//         })
+// }
+
+controller.resep = async (req, res) => {
+    const query = req.query.search
+    // const query = "tongkol"
+    if(query == undefined) {
+        axios.get(`https://www.masakapahariini.com/resep/`)
+        .then(function(response) {
+            if(response.status == 200) {
+                const html = response.data
+                const $ = cheerio.load(html)
+                let data = []
+                $('._recipes-list > .row > div.col-12').each(async function (i, elem) {
+                    data[i] = {
+                        thumb: $(this).find('div._recipe-card > div.card > .thumbnail >  img').attr('data-src'),
+                        title: $(this).find('div._recipe-card > div.card > .thumbnail >  img').attr('alt'),
+                        link: $(this).find('div._recipe-card > div.card > div.card-body > h3.card-title > a').attr('href'),
+                    }
+                })
+                console.log(data)
+                let selection = Math.floor(Math.random() * 10)
+                // load selection page
+                axios.get(data[selection].link)
+                    .then(function(response) {
+                        if(response.status == 200) {
+                            const html = response.data
+                            const $ = cheerio.load(html)
+                            let data = {}
+                            data = {
+                                title: $('div._recipe-header > div:nth-child(2) > div:nth-child(2) > header > h1').text().trim(),
+                                desc: $('div._recipe-header > div:nth-child(2) > div:nth-child(2) > div.excerpt').text().trim(),
+                                thumb: $('div._recipe-header > div:nth-child(2) > div:nth-child(2) > div.d-block > figure.recipe-image > div.image-wrapper > picture > img').attr('data-src'),
+                                cook_time: $('div._recipe-header > div:nth-child(2) > div:nth-child(2) > div._recipe-features > div > div > a:nth-child(1)').text().trim(),
+                                difficult: $('div._recipe-header > div:nth-child(2) > div:nth-child(2) > div._recipe-features > div > div > a:nth-child(2)').text().trim(),
+                                long_desc: $('div._rich-content > p').text().trim(),
+                                ingredients: $('div.ingredients > div > div._recipe-ingredients > div.d-flex').text().trim().replace(/'/g,''),
+                                steps:  $('div.container > div:nth-child(3) > div:nth-child(2) > div._recipe-steps > div').text().trim()
+                            }
+                            // console.log(data)
+                            res.send(data)
+                        }
+                    })
+            }
+        })
+    } else {
+        axios.get(`https://www.masakapahariini.com/resep/`)
+        .then(function(response) {
+            if(response.status == 200) {
+                const html = response.data
+                const $ = cheerio.load(html)
+                let data = []
+                $('._recipes-list > .row > div.col-12').each(async function (i, elem) {
+                    data[i] = {
+                        thumb: $(this).find('div._recipe-card > div.card > .thumbnail >  img').attr('data-src'),
+                        title: $(this).find('div._recipe-card > div.card > .thumbnail >  img').attr('alt'),
+                    }
+                })
+                console.log(data)
+            }
+        })
+    }
+}
+
+controller.sof = async (req, res) => {
+    axios.get(`https://survey.stackoverflow.co/2022`)
+        .then(function(response) {
+            if(response.status == 200) {
+                const html = response.data
+                const $ = cheerio.load(html)
+                let data = []
+                const title = $('article#section-education-educational-attainment > div > h3 > a').text().trim()
+                const desc = $('article#section-education-educational-attainment > div:nth-child(2) > p').text().trim()
+                $('table#ed-levelwy3mt > tbody > tr').each(function(i, elem) {
+                    data[i] = {
+                        respondent_name: $(this).find(`td:nth-child(1)`).text().trim(),
+                        persentase: $(this).find(`td:nth-child(2) > span:nth-child(1)`).text().trim()
+                    }
+                })
+                res.status(200).json({
+                    message: "Success to get Stackoverflow Data Survey 2022 in All Respondents Category",
+                    payload: {
+                        title: title,
+                        desc: desc,
+                        data: data
+                    }
+                })
+            }
+        })
 }
 
 module.exports = controller
