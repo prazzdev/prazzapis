@@ -32,38 +32,172 @@
                     Endpoints : <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">GET</span>
                 </h2>
                 <ul>
-                    <li class="mb-2">
-                        Merdeka Trending <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/merdeka-trending</span>
+                    <li id="news" class="mb-2">
+                        <details>
+                            <summary>
+                                News API
+                            </summary>
+                            <ul class="py-2 p-4">
+                                <li class="mb-2">
+                                    Merdeka Trending <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/merdeka-trending</span>
+                                </li>
+                                <li class="mb-2">
+                                    Antara News Trending <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/antara-news-trending</span>
+                                </li>
+                                <li class="mb-2">
+                                    <details>
+                                        <summary>iNews <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/inews</span></summary>
+                                        <ul class="py-2 px-4">
+                                            <li class="mb-2">
+                                                iNews Trending <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/inews?keyword=trending</span>
+                                            </li>
+                                            <li class="mb-2">
+                                                iNews Daerah <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/inews?keyword=regional</span>
+                                            </li>
+                                        </ul>
+                                    </details>
+                                </li>
+                            </ul>
+                        </details>
                     </li>
-                    <li class="mb-2">
-                        Antara News Trending <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/antara-news-trending</span>
+                    <li id="anime" class="mb-2">
+                        <details>
+                            <summary>Anime API</summary>
+                            <ul class="py-2 px-4">
+                                <li class="mb-2">
+                                    Top Anime on Batckun <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/bk-top-anime</span>  
+                                </li>
+                                <li class="mb-2">
+                                    Anime Batch <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/anime-batch</span>
+                                </li>
+                            </ul>
+                        </details>
                     </li>
-                    <li class="mb-2">
-                        Top Anime on Batckun <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/bk-top-anime</span>
+                    <li id="wallpaper" class="mb-2">
+                        <details>
+                            <summary>Wallpaper API</summary>
+                            <ul class="py-2 px-4">
+                                <li class="mb-2">
+                                    <details>
+                                        <summary>
+                                            Wallpaperflare <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/wpflare</span>
+                                        </summary>
+                                        <ul class="py-2 px-4">
+                                            <h3 class="font-semibold text-md text-gray-800 mb-2">Parameters</h3>
+                                            <li class="mb-2">
+                                                By Search <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">search=animal</span>
+                                            </li>
+                                        </ul>
+                                    </details>
+                                </li>
+                                <li class="mb-2">
+                                    <details>
+                                        <summary>
+                                            WallpaperScraft <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/wpscraft</span>
+                                        </summary>
+                                        <ul class="py-2 px-4">
+                                            <h3 class="font-semibold text-md text-gray-800 mb-2">Parameters</h3>
+                                            <li class="mb-2">
+                                                By Category <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">category=animal</span>
+                                            </li>
+                                            <li class="mb-2">
+                                                By Image Screen Size <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">size=1280x720</span>
+                                            </li>
+                                        </ul>
+                                    </details>
+                                    
+                                </li>
+                            </ul>
+                        </details>
                     </li>
-                    <li class="mb-2">
-                        Tebak Gambar <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/tebak-gambar</span>
+                    <li id="game" class="mb-2">
+                        <details>
+                            <summary>Game API</summary>
+                            <ul class="py-2 px-4">
+                                <li class="mb-2">
+                                    Tebak Gambar <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/tebak-gambar</span>
+                                </li>       
+                            </ul>
+                        </details>
                     </li>
-                    <li class="mb-2">
-                        Anime Batch <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/anime-batch</span>
+                    <li id="utility" class="mb-2">
+                        <details>
+                            <summary>Utility</summary>
+                            <ul class="py-2 px-4">
+                                <li class="mb-2">
+                                    <details>
+                                        <summary>
+                                            IS.GD (URL Shortener) <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/isgd</span>
+                                        </summary>
+                                        <ul class="py-2 px-4">
+                                            <h3 class="font-semibold text-md text-gray-800 mb-2">Parameters</h3>
+                                            <li class="mb-2">
+                                                Url <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">url=google.com</span>
+                                            </li>
+                                        </ul>
+                                    </details>
+                                </li>
+                                <li class="mb-2">
+                                    <details>
+                                        <summary>
+                                            Lirik Lagu <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/lyric</span>
+                                        </summary>
+                                        <ul class="py-2 px-4">
+                                            <h3 class="font-semibold text-md text-gray-800 mb-2">Parameters</h3>
+                                            <li class="mb-2">
+                                                By Title <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">title=kokoronashi
+                                            </li>
+                                        </ul>
+                                    </details>
+                                </li>
+                            </ul>
+                        </details>
                     </li>
-                    <li class="mb-2">
-                        Lirik Lagu <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/lyric?title=[judul]</span>
+                    <li id="apk-downloader" class="mb-2">
+                        <details>
+                            <summary>APK Downloader</summary>
+                            <ul class="py-2 px-4">
+                                <li class="mb-2">
+                                    <details>
+                                        <summary>
+                                            APKSFREE <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/apksfree</span>
+                                        </summary>
+                                        <ul class="py-2 px-4">
+                                            <h3 class="font-semibold text-md text-gray-800 mb-2">Parameters</h3>
+                                            <li class="mb-2">
+                                                By Search <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/apksfree?search=[application-name]</span>
+                                            </li>
+                                        </ul>
+                                    </details>
+                                </li>
+                            </ul>
+                        </details>
                     </li>
-                    <li class="mb-2">
-                        IS.GD (URL Shortener) <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/isgd?url=[url]</span>
-                    </li>
-                    <li class="mb-2">
-                        Wallpaperflare <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/wpflare?search=[animal]</span>
-                    </li>
-                    <li class="mb-2">
-                        WallpaperScraft <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/wpscraft?category=[animal]&?size=[image screen size]</span>
-                    </li>
-                    <li class="mb-2">
-                        ROMSGAMES <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/romsgames</span>
-                    </li>
-                    <li class="mb-2">
-                        APKSFREE <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/apksfree?search=[application-name]</span>
+                    <li id="game-downloader" class="mb-2">
+                        <details>
+                            <summary>Game Downloader</summary>
+                            <ul class="py-2 px-4">
+                                <li class="mb-2">
+                                    <details>
+                                        <summary>
+                                            ROMSGAMES <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/romsgames</span>
+                                        </summary>
+                                        <ul class="py-2 px-4">
+                                            <h4 class="font-semibold text-md text-gray-800 mb-2">Parameters</h4>
+                                            <li class="mb-2">
+                                                Game ROM <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/romsgames?rom=playstation-2</span> 
+                                            </li>
+                                            <li class="mb-2">
+                                                Filter by Letter <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/romsgames?letter=a-z/all</span> 
+                                            </li>
+                                            <li class="mb-2">
+                                                Data by Page <span class="font-mono text-gray-800 bg-gray-200 py-1 px-2 ml-1 inline-block">/romsgames?page=1-99</span> 
+                                            </li>
+                                        </ul>
+                                    </details>
+                                </li>            
+                            </ul>
+                        </details>
                     </li>
                 </ul>
             </section>
