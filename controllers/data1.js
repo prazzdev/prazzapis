@@ -1,5 +1,6 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
+const opt = require('../options.json')
 controller = {}
 
 // merdekaTrending, antaraNewsTrending, bkTopAnime, tebakGambar, animeBatch
@@ -411,7 +412,7 @@ controller.apksfree = async (req, res) => {
                     let rep1 = link.replace(`location.href=`,``)
                     let rep2 = rep1.replace(/'/g,``) + "download"
                     axios.get(rep2)
-                        .then(function(response) {
+                        .then(async function(response) {
                             if(response.status == 200) {
                                 const html = response.data
                                 const $ = cheerio.load(html)
@@ -419,16 +420,25 @@ controller.apksfree = async (req, res) => {
                                 const title = $('div.app-icon-new').find('img').attr('alt')
                                 const icon = $('div.app-icon-new').find('img').attr('src')
                                 const link = $('div.download-button-main.centered-element').find('a').attr('href')
+                                // const shortLink = async (param) => {
+                                //     await axios.get(`https://api.shrtco.de/v2/shorten?url=${param}`)
+                                //     .then(function(response) {
+                                //         const datas = response.data
+                                //         console.log(datas.result.short_link3)
+                                //         return datas.result.short_link3
+                                //     })
+                                // }
+                                // const shortTitle = shortLink(title)
+                                // const shortUrl =  shortLink(link)
                                 data = {
                                     icon: icon,
                                     title: title,
                                     link: link
                                 }
-
                                 res.status(200).json({
                                     message: "Success to get apk data",
                                     data: data,
-                                    note: "Sorry if data isn't match"
+                                    note: opt.reply.note[0]
                                 })
                             }
                         })

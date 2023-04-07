@@ -19,5 +19,6 @@ router.get('/apksfree', controller.data1.apksfree)
 router.get('/resep', controller.data1.resep)
 router.get('/sof', controller.data1.sof)
 router.get('/rs', controller.data1.rs)
+router.get('/tokped', controller.eCommerceController.tokopedia)
 
 module.exports = router
