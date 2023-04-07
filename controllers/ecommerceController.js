@@ -17,7 +17,9 @@ controller.tokopedia = async (req, res) => {
     const grosir = req.query.grosir
     let condText
     if(condition == 1){condText = "Baru"}else{condText = "Bekas"}
-    axios.get(`https://www.tokopedia.com/search?page=${page}&q=${keyword}&shop-tier=${shopTier[2]}&pmax=${priceMax}&pmin=${priceMin}&condition=${condition}&bundling=${bundling}&cashbackm=${cashback}&cod=${cod}&free_shipping=${freeShipping}&is_discount=${discount}&wholesale=${grosir}`)
+    if(page == Number){page==1}
+    console.log(page)
+    axios.get(`https://www.tokopedia.com/search?page=${page}&q=${keyword}&shop-tier=${shopTier}&pmax=${priceMax}&pmin=${priceMin}&condition=${condition}&bundling=${bundling}&cashbackm=${cashback}&cod=${cod}&free_shipping=${freeShipping}&is_discount=${discount}&wholesale=${grosir}`)
         .then(function(response) {
             if(response.status == 200) {
                 const html = response.data
