@@ -1,0 +1,41 @@
+{
+"category": [
+    {
+        "news": [
+            {
+                "merdekaTrending": {
+                    "endpoint": "/merdeka-trending"
+                }
+            },
+            {
+                "antaraNewsTrending": {
+                    "endpoint": "/antaranews-trending"
+                }
+            },
+            {
+                "inews": {
+                    "endpoint": "/inews",
+                    "parameters": {
+                        "byKeyword": "keyword=[...]"
+                    },
+                    "availableKeyword": "trending, regional"
+                }
+            }
+        ]
+    },
+    {
+        "anime": [
+            {
+                "topAnimeOnBatckun": {
+                "endpoints": "/bk-top-anime"
+                }  
+            },
+            {
+                "animeBatch": {
+                    "endpoints": "/anime-batch"
+                }
+            }
+        ]
+    }
+]
+}
