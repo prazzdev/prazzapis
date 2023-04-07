@@ -3,21 +3,21 @@ const cheerio = require('cheerio')
 controller = {}
 
 controller.tokopedia = async (req, res) => {
-    const keyword = "pc murah"
-    const page = 2
-    const shopTier = [1,2,3]
+    const keyword = req.query.keyword
+    const page = req.query.page
+    const shopTier = req.query.shop_tier
     const priceMin = req.query.min_harga
     const priceMax = req.query.max_harga
-    const cashback = [false, true]
+    const cashback = req.query.cashbackm
     const condition = req.query.condition
-    const bundling = [false, true]
-    const freeShipping = [false, true]
-    const cod = [false, true]
-    const discount = [false, true]
-    const grosir = [false, true]
+    const bundling = req.query.bundling
+    const freeShipping = req.query.free_shipping
+    const cod = req.query.cod
+    const discount = req.query.discount
+    const grosir = req.query.grosir
     let condText
     if(condition == 1){condText = "Baru"}else{condText = "Bekas"}
-    axios.get(`https://www.tokopedia.com/search?page=${page}&q=${keyword}&shop-tier=${shopTier[2]}&pmax=${priceMax}&pmin=${priceMin}&condition=${condition}&bundling=${bundling[0]}&cashbackm=${cashback[0]}&cod=${cod[0]}&free_shipping=${freeShipping[0]}&is_discount=${discount[0]}&wholesale=${grosir[0]}`)
+    axios.get(`https://www.tokopedia.com/search?page=${page}&q=${keyword}&shop-tier=${shopTier[2]}&pmax=${priceMax}&pmin=${priceMin}&condition=${condition}&bundling=${bundling}&cashbackm=${cashback}&cod=${cod}&free_shipping=${freeShipping}&is_discount=${discount}&wholesale=${grosir}`)
         .then(function(response) {
             if(response.status == 200) {
                 const html = response.data
