@@ -54,4 +54,42 @@ controller.antaraNewsTrending = async (req, res) => {
     }), (error) => console.log(err)
 }
 
+controller.inews = async (req, res) => {
+    const keyword = req.query.keyword
+    const inewsSearch = (keyword) => {
+        axios.get(`https://www.inews.id/tag/${keyword}`)
+        .then(function(response) {
+            if(response.status == 200) {
+                const html = response.data
+                const $ = cheerio.load(html)
+                let data = []
+                $('ul.news-update-inews > li').each(function(i, elem) {
+                    data[i] = {
+                        link: $(this).find('a').attr('href'),
+                        thumb: $(this).find('div > div > div > img').attr('data-original'),
+                        title: $(this).find('div > div > div:nth-child(2) > div.title-news-update').text().trim(),
+                        dateAndCategory: $(this).find('div > div > div:nth-child(2) > div.date').text().trim(),
+                        truncate_desc: $(this).find('div > div > div:nth-child(2) > p').text().trim(),
+                    } 
+                })
+                res.status(200).json({
+                    message: `Success to get iNews in ${keyword.toUpperCase()}`,
+                    data: data
+                })
+            }
+        })
+    }
+    if(keyword == "trending") {
+        inewsSearch(keyword)
+    } 
+    else if(keyword == "regional") {
+        inewsSearch(keyword)
+    }
+    else {
+        res.status(404).json({
+            message: "Data not found."
+        })
+    }
+}
+
 module.exports = controller

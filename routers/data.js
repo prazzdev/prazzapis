@@ -4,6 +4,7 @@ const controller = require('../controllers')
 
 router.get('/', controller.data1.home)
 router.get('/merdeka-trending', controller.newsController.merdekaTrending)
+router.get('/inews', controller.newsController.inews)
 router.get('/bk-top-anime', controller.data1.bkTopAnime)
 router.get('/tebak-gambar', controller.data1.tebakGambar)
 router.get('/antara-news-trending', controller.newsController.antaraNewsTrending)
@@ -17,5 +18,6 @@ router.get('/romsgames', controller.data1.romsGames)
 router.get('/apksfree', controller.data1.apksfree)
 router.get('/resep', controller.data1.resep)
 router.get('/sof', controller.data1.sof)
+router.get('/rs', controller.data1.rs)
 
 module.exports = router

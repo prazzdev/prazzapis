@@ -437,31 +437,39 @@ controller.apksfree = async (req, res) => {
     }
 }
 
-// controller.resep = async (req, res) => {
-//     axios.request({
-//         url: "https://cookpad.com/id/cari/sosis?event=search.typed_query",
-//         method: "GET",
-//         headers: {
-//         "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-//         "accept-language": "en-US,en;q=0.9,id;q=0.8",
-//         "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
-//         // "cookie": "_ga=GA1.2.1240046717.1620835673; PHPSESSID=i14curq5t8omcljj1hlle52762; popCookie=1; _gid=GA1.2.1936694796.1623913934"
-//         }
-//         })
-//         .then(async function(response) {
-//             if(response.status == 200) {
-//                 const html = response.data
-//                 const $ = cheerio.load(html)
-//                 let data = []
-//                 $('div.main_contents > div > div > ul').each(function (elem, i) {
-//                     data[i] = {
-//                         recipe_id: $('li').attr('id')
-//                     }
-//                 })
-//                 console.log(data)
-//             }
-//         })
-// }
+controller.rs = async (req, res) => {
+    const query = "tongkol"
+    axios.request({
+            url: `https://cookpad.com/id/cari/${query}?event=search.typed_query`,
+            method: "GET",
+            headers: {
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+            "accept-language": "en-US,en;q=0.9,id;q=0.8",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
+            // "cookie": "_ga=GA1.2.1240046717.1620835673; PHPSESSID=i14curq5t8omcljj1hlle52762; popCookie=1; _gid=GA1.2.1936694796.1623913934"
+        }
+        })
+        .then(async function(response) {
+            if(response.status == 200) {
+                const html = response.data
+                const $ = cheerio.load(html)
+                let data = []
+                $('div#main_contents > div > div:nth-child(2) > ul > li').each(function(i, elem) {
+                    data[i] = {
+                        title: $(this).find('div:nth-child(1) > div > div > h2 > a').text().trim(),
+                        short_ingredients_desc: $(this).find('div:nth-child(1) > div > div:nth-child(2) > div > div').text().trim(),
+                        author: $(this).find('div:nth-child(4) > div > span > span').text().trim(),
+                        thumb: $(this).find('div:nth-child(2) > picture > img').attr('data-original'),
+                        url: "https://cookpad.com" + $(this).find('div:nth-child(1) > div > div > h2 > a').attr('href'),
+                    }
+                })
+                console.log(data)
+                res.send(data)
+                
+            }
+            console.log(response.status)
+        })
+}
 
 controller.resep = async (req, res) => {
     const query = req.query.search
@@ -533,6 +541,7 @@ controller.sof = async (req, res) => {
                 let data = []
                 const title = $('article#section-education-educational-attainment > div > h3 > a').text().trim()
                 const desc = $('article#section-education-educational-attainment > div:nth-child(2) > p').text().trim()
+                const response_total = $('article#section-education-educational-attainment > div:nth-child(3) > figure.js-active > div:nth-child(2) > span').text().trim() + " responses"
                 $('table#ed-levelwy3mt > tbody > tr').each(function(i, elem) {
                     data[i] = {
                         respondent_name: $(this).find(`td:nth-child(1)`).text().trim(),
@@ -544,6 +553,7 @@ controller.sof = async (req, res) => {
                     payload: {
                         title: title,
                         desc: desc,
+                        response_total: response_total,
                         data: data
                     }
                 })
